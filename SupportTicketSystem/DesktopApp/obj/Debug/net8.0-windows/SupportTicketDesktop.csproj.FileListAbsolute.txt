@@ -1,0 +1,17 @@
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.csproj.AssemblyReference.cache
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.GeneratedMSBuildEditorConfig.editorconfig
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.AssemblyInfoInputs.cache
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.AssemblyInfo.cs
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.csproj.CoreCompileInputs.cache
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\SupportTicketDesktop.exe
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\SupportTicketDesktop.deps.json
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\SupportTicketDesktop.runtimeconfig.json
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\SupportTicketDesktop.dll
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\SupportTicketDesktop.pdb
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportT.6F99AA54.Up2Date
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.dll
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\refint\SupportTicketDesktop.dll
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.pdb
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\SupportTicketDesktop.genruntimeconfig.cache
+D:\Karan\PERSONAL PROJECTS\SupportTicketSystem_2\SupportTicketSystem\DesktopApp\obj\Debug\net8.0-windows\ref\SupportTicketDesktop.dll
