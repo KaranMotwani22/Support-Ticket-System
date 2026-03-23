@@ -15,15 +15,10 @@ public class TicketsController : ControllerBase
 
     public TicketsController(TicketService tickets) => _tickets = tickets;
 
-    // ── helpers ────────────────────────────────────────────────
-    private int CurrentUserId =>
-        int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    private int  CurrentUserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    private bool IsAdmin       => User.IsInRole("Admin");
 
-    private bool IsAdmin =>
-        User.IsInRole("Admin");
-
-    // ── GET /api/tickets ────────────────────────────────────────
-    /// <summary>List tickets. Users see only their own; Admins see all.</summary>
+    // GET /api/tickets
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -31,8 +26,7 @@ public class TicketsController : ControllerBase
         return Ok(ApiResponse<IEnumerable<TicketListItem>>.Ok(list));
     }
 
-    // ── GET /api/tickets/{id} ───────────────────────────────────
-    /// <summary>Ticket detail including history and comments.</summary>
+    // GET /api/tickets/{id}
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -43,8 +37,7 @@ public class TicketsController : ControllerBase
         return Ok(ApiResponse<TicketDetailResponse>.Ok(ticket));
     }
 
-    // ── POST /api/tickets ───────────────────────────────────────
-    /// <summary>Create a new ticket (Users only).</summary>
+    // POST /api/tickets
     [HttpPost]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> Create([FromBody] CreateTicketRequest req)
@@ -59,25 +52,25 @@ public class TicketsController : ControllerBase
             return BadRequest(ApiResponse<string>.Fail("Priority must be Low, Medium, or High."));
 
         var ticket = await _tickets.CreateTicketAsync(req, CurrentUserId);
+        if (ticket == null)
+            return StatusCode(500, ApiResponse<string>.Fail("Failed to create ticket."));
+
         return CreatedAtAction(nameof(Get), new { id = ticket.Id },
             ApiResponse<object>.Ok(ticket, "Ticket created."));
     }
 
-    // ── PUT /api/tickets/{id}/assign ────────────────────────────
-    /// <summary>Assign ticket to an admin (Admin only).</summary>
+    // PUT /api/tickets/{id}/assign
     [HttpPut("{id:int}/assign")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Assign(int id, [FromBody] AssignTicketRequest req)
     {
-        var ok = await _tickets.AssignTicketAsync(id, req.AssignedToUserId, CurrentUserId);
-        if (!ok)
-            return BadRequest(ApiResponse<string>.Fail("Cannot assign — ticket not found or is closed."));
+        var (ok, error) = await _tickets.AssignTicketAsync(id, req.AssignedToUserId, CurrentUserId);
+        if (!ok) return BadRequest(ApiResponse<string>.Fail(error!));
 
         return Ok(ApiResponse<string>.Ok("Assigned", "Ticket assigned successfully."));
     }
 
-    // ── PUT /api/tickets/{id}/status ────────────────────────────
-    /// <summary>Change ticket status (Admin only).</summary>
+    // PUT /api/tickets/{id}/status
     [HttpPut("{id:int}/status")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateStatusRequest req)
@@ -91,8 +84,7 @@ public class TicketsController : ControllerBase
         return Ok(ApiResponse<string>.Ok("Updated", "Status updated."));
     }
 
-    // ── POST /api/tickets/{id}/comments ─────────────────────────
-    /// <summary>Add comment. Admins can post internal notes.</summary>
+    // POST /api/tickets/{id}/comments
     [HttpPost("{id:int}/comments")]
     public async Task<IActionResult> AddComment(int id, [FromBody] AddCommentRequest req)
     {
@@ -105,8 +97,7 @@ public class TicketsController : ControllerBase
         return Ok(ApiResponse<string>.Ok("Added", "Comment added."));
     }
 
-    // ── GET /api/tickets/admins ─────────────────────────────────
-    /// <summary>List admin users for the assign dropdown.</summary>
+    // GET /api/tickets/admins
     [HttpGet("admins")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAdmins()
