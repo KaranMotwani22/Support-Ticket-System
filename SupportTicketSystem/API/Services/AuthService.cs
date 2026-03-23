@@ -1,8 +1,8 @@
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using SupportTicketAPI.Data;
 using SupportTicketAPI.DTOs;
@@ -13,11 +13,11 @@ namespace SupportTicketAPI.Services;
 public class AuthService
 {
     private readonly DatabaseContext _db;
-    private readonly IConfiguration _config;
+    private readonly IConfiguration  _config;
 
     public AuthService(DatabaseContext db, IConfiguration config)
     {
-        _db = db;
+        _db     = db;
         _config = config;
     }
 
@@ -27,17 +27,16 @@ public class AuthService
         await con.OpenAsync();
 
         var user = await con.QuerySingleOrDefaultAsync<User>(
-            "SELECT * FROM Users WHERE Username = @Username AND IsActive = 1",
-            new { req.Username });
+            "sp_GetUserByUsername",
+            new { req.Username },
+            commandType: CommandType.StoredProcedure);
 
         if (user == null) return null;
         if (!BCrypt.Net.BCrypt.Verify(req.Password, user.Password)) return null;
 
-        var token = GenerateJwt(user);
-
         return new LoginResponse
         {
-            Token    = token,
+            Token    = GenerateJwt(user),
             UserId   = user.Id,
             Username = user.Username,
             FullName = user.FullName,
@@ -60,10 +59,10 @@ public class AuthService
         };
 
         var token = new JwtSecurityToken(
-            issuer:   _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims:   claims,
-            expires:  expires,
+            issuer:             _config["Jwt:Issuer"],
+            audience:           _config["Jwt:Audience"],
+            claims:             claims,
+            expires:            expires,
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);

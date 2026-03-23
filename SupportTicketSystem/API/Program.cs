@@ -6,7 +6,6 @@ using SupportTicketAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Services ──────────────────────────────────────────────────
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -14,9 +13,11 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "Support Ticket API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new()
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: Bearer {token}",
-        Name = "Authorization", In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey, Scheme = "Bearer"
+        Description = "JWT Authorization header. Example: Bearer {token}",
+        Name        = "Authorization",
+        In          = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type        = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme      = "Bearer"
     });
     c.AddSecurityRequirement(new()
     {
@@ -27,14 +28,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Dependency Injection
+// DI
 builder.Services.AddSingleton<DatabaseContext>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TicketService>();
 
-// JWT Authentication
+// JWT
 var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? throw new InvalidOperationException("Jwt:Key is not configured.");
+    ?? throw new InvalidOperationException("Jwt:Key not configured.");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -55,10 +56,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(o => o.AddPolicy("AllowAll", p =>
     p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
-// ── App ───────────────────────────────────────────────────────
 var app = builder.Build();
 
-// Seed database on startup
+// Seed on startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
